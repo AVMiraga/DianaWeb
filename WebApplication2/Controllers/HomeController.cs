@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.DAL;
 
 namespace WebApplication2.Controllers
@@ -11,9 +12,9 @@ namespace WebApplication2.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var Product = _context.Products.Where(p => !p.IsDeleted).ToList();
+            var Product = await _context.Products.Where(p => !p.IsDeleted).ToListAsync();
             ViewBag.Category = _context.Categories;
 
             return View(Product);

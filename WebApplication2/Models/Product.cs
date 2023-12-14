@@ -12,7 +12,7 @@ namespace WebApplication2.Models
         [NotMapped]
         public IFormFile MainImage { get; set; }
         [NotMapped]
-        public IFormFile AdditionalImage { get; set; }
+        public List<IFormFile> AdditionalImages { get; set; }
         public List<Image> Images { get; set; }
 
         public List<Size> Size { get; set; }
@@ -27,8 +27,8 @@ namespace WebApplication2.Models
         [NotMapped]
         public List<int> MaterialIds { get; set; }
 
-        public List<Category> Category { get; set; }
+        public Category Category { get; set; }
         [NotMapped]
-        public List<int> CategoryIds { get; set; }
+        public int CategoryId { get; set; }
     }
 }

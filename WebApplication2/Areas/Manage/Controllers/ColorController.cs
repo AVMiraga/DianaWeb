@@ -9,94 +9,94 @@ using WebApplication2.Models;
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class CategoryController : Controller
+    public class ColorController : Controller
     {
         private readonly AppDbContext _context;
-        public CategoryController(AppDbContext context)
+        public ColorController(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var colors = await _context.Colors.ToListAsync();
 
-            return View(categories);
+            return View(colors);
         }
 
-        public IActionResult CreateCategory()
+        public IActionResult CreateColor()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> CreateColor(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = new Category
+            Color color = new Color
             {
                 Name = propertyVm.Name
             };
 
-            await _context.Categories.AddAsync(category);
+            await _context.Colors.AddAsync(color);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> UpdateCategory(int id)
+        public async Task<IActionResult> UpdateColor(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Color color = await _context.Colors.FindAsync(id);
 
-            if (category == null)
+            if (color == null)
             {
                 return NotFound();
             }
 
             CreatePropertyVm propertyVm = new CreatePropertyVm
             {
-                Id = category.Id,
-                Name = category.Name
+                Id = color.Id,
+                Name = color.Name
             };
 
             return View(propertyVm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> UpdateColor(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = await _context.Categories.FindAsync(propertyVm.Id);
+            Color color = await _context.Colors.FindAsync(propertyVm.Id);
 
-            if (category == null)
+            if (color == null)
             {
                 return NotFound();
             }
 
-            category.Name = propertyVm.Name;
+            color.Name = propertyVm.Name;
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteColor(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Color color = await _context.Colors.FindAsync(id);
 
-            if (category == null)
+            if (color == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.Colors.Remove(color);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");

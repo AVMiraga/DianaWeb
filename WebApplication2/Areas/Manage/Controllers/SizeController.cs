@@ -9,94 +9,94 @@ using WebApplication2.Models;
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class CategoryController : Controller
+    public class SizeController : Controller
     {
         private readonly AppDbContext _context;
-        public CategoryController(AppDbContext context)
+        public SizeController(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var sizes = await _context.Sizes.ToListAsync();
 
-            return View(categories);
+            return View(sizes);
         }
 
-        public IActionResult CreateCategory()
+        public IActionResult CreateSize()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> CreateSize(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = new Category
+            Size size = new Size
             {
                 Name = propertyVm.Name
             };
 
-            await _context.Categories.AddAsync(category);
+            await _context.Sizes.AddAsync(size);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> UpdateCategory(int id)
+        public async Task<IActionResult> UpdateSize(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Size size = await _context.Sizes.FindAsync(id);
 
-            if (category == null)
+            if (size == null)
             {
                 return NotFound();
             }
 
             CreatePropertyVm propertyVm = new CreatePropertyVm
             {
-                Id = category.Id,
-                Name = category.Name
+                Id = size.Id,
+                Name = size.Name
             };
 
             return View(propertyVm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> UpdateSize(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = await _context.Categories.FindAsync(propertyVm.Id);
+            Size size = await _context.Sizes.FindAsync(propertyVm.Id);
 
-            if (category == null)
+            if (size == null)
             {
                 return NotFound();
             }
 
-            category.Name = propertyVm.Name;
+            size.Name = propertyVm.Name;
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteSize(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Size size = await _context.Sizes.FindAsync(id);
 
-            if (category == null)
+            if (size == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.Sizes.Remove(size);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");

@@ -9,94 +9,94 @@ using WebApplication2.Models;
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
-    public class CategoryController : Controller
+    public class MaterialController : Controller
     {
         private readonly AppDbContext _context;
-        public CategoryController(AppDbContext context)
+        public MaterialController(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var materials = await _context.Materials.ToListAsync();
 
-            return View(categories);
+            return View(materials);
         }
 
-        public IActionResult CreateCategory()
+        public IActionResult CreateMaterial()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> CreateMaterial(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = new Category
+            Material material = new Material
             {
                 Name = propertyVm.Name
             };
 
-            await _context.Categories.AddAsync(category);
+            await _context.Materials.AddAsync(material);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> UpdateCategory(int id)
+        public async Task<IActionResult> UpdateMaterial(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Material material = await _context.Materials.FindAsync(id);
 
-            if (category == null)
+            if (material == null)
             {
                 return NotFound();
             }
 
             CreatePropertyVm propertyVm = new CreatePropertyVm
             {
-                Id = category.Id,
-                Name = category.Name
+                Id = material.Id,
+                Name = material.Name
             };
 
             return View(propertyVm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCategory(CreatePropertyVm propertyVm)
+        public async Task<IActionResult> UpdateMaterial(CreatePropertyVm propertyVm)
         {
             if (!ModelState.IsValid)
             {
                 return View(propertyVm);
             }
 
-            Category category = await _context.Categories.FindAsync(propertyVm.Id);
+            Material material = await _context.Materials.FindAsync(propertyVm.Id);
 
-            if (category == null)
+            if (material == null)
             {
                 return NotFound();
             }
 
-            category.Name = propertyVm.Name;
+            material.Name = propertyVm.Name;
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteMaterial(int id)
         {
-            Category category = await _context.Categories.FindAsync(id);
+            Material material = await _context.Materials.FindAsync(id);
 
-            if (category == null)
+            if (material == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.Materials.Remove(material);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
