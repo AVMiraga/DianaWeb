@@ -1,0 +1,34 @@
+﻿@model List<Category>
+
+@{
+    int count = 0;
+}
+
+<div class="table-responsive pt-3 mx-auto">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
