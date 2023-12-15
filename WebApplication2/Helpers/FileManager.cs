@@ -35,7 +35,7 @@ namespace WebApplication2.Helpers
             return fileName;
         }
 
-        public static bool DeleteFile(string root, string folder, string fileName)
+        public static bool DeleteFile(this string fileName, string root, string folder)
         {
             string path = Path.Combine(root, folder, fileName);
 
