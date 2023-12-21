@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Areas.Manage.ViewModels;
 using WebApplication2.DAL;
@@ -8,6 +9,7 @@ using WebApplication2.Models;
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
+    [Authorize(Roles="Admin")]
     public class SliderController : Controller
     {
         private readonly AppDbContext _context;

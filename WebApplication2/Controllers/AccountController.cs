@@ -103,10 +103,14 @@ namespace WebApplication2.Controllers
 
 			await _signInManager.SignInAsync(user, isPersistent: false);
 
+			await _userManager.AddToRoleAsync(user, MyRoles.Admin.ToString());
+
 			if(returnUrl  != null && returnUrl != "/Account/Register" && returnUrl != "/Account/Login")
 			{
 				return Redirect(returnUrl);
 			}
+
+			
 
 			return RedirectToAction("Index", "Home");
 		}
@@ -118,7 +122,7 @@ namespace WebApplication2.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-/*		public async Task<IActionResult> CreateRole()
+		public async Task<IActionResult> CreateRole()
 		{
 			foreach (var role in Enum.GetNames(typeof(MyRoles)))
 			{
@@ -128,6 +132,6 @@ namespace WebApplication2.Controllers
 				}
 			}
 			return RedirectToAction("Index", "Home");
-		}*/
+		}
 	}
 }

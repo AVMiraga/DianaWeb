@@ -9,6 +9,7 @@ using WebApplication2.Models;
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
+    [Authorize(Roles="Admin")]
     public class MaterialController : Controller
     {
         private readonly AppDbContext _context;

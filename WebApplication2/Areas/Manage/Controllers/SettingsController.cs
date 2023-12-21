@@ -2,10 +2,13 @@
 using WebApplication2.DAL;
 using WebApplication2.Helpers;
 using WebApplication2.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace WebApplication2.Areas.Manage.Controllers
 {
     [Area("Manage")]
+    [Authorize(Roles="Admin")]
     public class SettingsController : Controller
     {
         private readonly AppDbContext _context;

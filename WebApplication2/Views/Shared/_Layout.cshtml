@@ -209,11 +209,20 @@
             <ul class="header-action">
               <li class="user-menu">
                 <a class="title" href="javascript:;"><i class="fa fa-user-o"></i></a>
-                <ul class="user-dropdown">
-                  <li class="user">
+                                    <ul class="user-dropdown" style="height: 93px !important;">
+                                        <li class="user" style="padding: 14px 20px !important;">
                     <ul>
-                      <li><a href="#/">Login</a></li>
-                    </ul>
+                      @if(!User.Identity.IsAuthenticated)
+                      {
+                          <li><a asp-action="Login" asp-controller="Account">Login</a></li>
+                                                    <li><a asp-action="Register" asp-controller="Account">Register</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a>@User.Identity.Name</a></li>
+                                                    <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+                                                }
+                                            </ul>
                   </li>
                 </ul>
               </li>
