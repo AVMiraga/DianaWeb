@@ -1,0 +1,60 @@
+﻿@model Dictionary<string, string>
+
+@{
+    var phone = Model.TryGetValue("Phone", out string phoneValue) ? phoneValue : "";
+    var email = Model.TryGetValue("Email", out string emailValue) ? emailValue : "";
+    var address = Model.TryGetValue("Address", out string addressValue) ? addressValue : "";
+    var facebook = Model.TryGetValue("Facebook", out string facebookValue) ? facebookValue : "";
+    var instagram = Model.TryGetValue("Instagram", out string instagramValue) ? instagramValue : "";
+    var twitter = Model.TryGetValue("Twitter", out string twitterValue) ? twitterValue : "";
+    var youtube = Model.TryGetValue("Youtube", out string youtubeValue) ? youtubeValue : "";
+    var linkedin = Model.TryGetValue("Linkedin", out string linkedinValue) ? linkedinValue : "";
+    var googleplus = Model.TryGetValue("Google", out string googleplusValue) ? googleplusValue : "";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="grid-margin">
+            <form class="forms-sample" method="post">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input name="settings[Phone]" value="@phone" placeholder="+994 XX XXX XX XX" />
+                </div>
+                <div class="form-group">
+                    <label>E-Mail</label>
+                    <input name="settings[Email]" value="@email" placeholder="example@example.ex" />
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input name="settings[Address]" value="@address" placeholder="example st." />
+                </div>
+                <div class="form-group">
+                    <label>Facebook</label>
+                    <input name="settings[Facebook]" value="@facebook" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label>Instagram</label>
+                    <input name="settings[Instagram]" value="@instagram" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label>Twitter</label>
+                    <input name="settings[Twitter]" value="@twitter" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label>YouTube</label>
+                    <input name="settings[Youtube]" value="@youtube" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input name="settings[Linkedin]" value="@linkedin" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label>Google Plus</label>
+                    <input name="settings[Google]" value="@googleplus" placeholder="Username" />
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button class="btn btn-light" asp-action="index">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -14,7 +14,13 @@ namespace WebApplication2.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var Product = await _context.Products.Where(p => !p.IsDeleted).ToListAsync();
+            var Product = await _context.Products
+                .Include(p => p.Size)
+                .Include(p => p.Color)
+                .Include(p => p.Material)
+                .Include(p => p.Category)
+                .Include(p => p.Images)
+                .Where(p => !p.IsDeleted).ToListAsync();
             ViewBag.Category = _context.Categories;
 
             return View(Product);

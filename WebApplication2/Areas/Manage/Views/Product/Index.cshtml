@@ -47,9 +47,9 @@
             {
                 count++;
 
-                string Sizes = String.Join("", item.Size.Select(x => x.Name).ToList());
-                string Colors = String.Join("", item.Color.Select(x => x.Name).ToList());
-                string Materials = String.Join("", item.Material.Select(x => x.Name).ToList());
+                string Sizes = String.Join(", ", item.Size.Select(x => x.Name).ToList());
+                string Colors = String.Join(", ", item.Color.Select(x => x.Name).ToList());
+                string Materials = String.Join(", ", item.Material.Select(x => x.Name).ToList());
 
                 <tr>
                     <td>
@@ -80,8 +80,8 @@
                         <img src="~/Upload/@(item.Images?.FirstOrDefault(x => x.IsMain)?.ImgUrl ?? "")"/>
                     </td>
                     <td>
-                        <a class="btn btn-danger" asp-action="DeleteCategory" asp-route-id="@item.Id">Delete</a>
-                        <a class="btn btn-warning" asp-action="UpdateCategory" asp-route-id="@item.Id">Update</a>
+                        <a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-warning" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</a>
                     </td>
                 </tr>
             }

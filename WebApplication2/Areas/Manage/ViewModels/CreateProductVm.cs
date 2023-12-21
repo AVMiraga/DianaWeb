@@ -14,7 +14,6 @@ namespace WebApplication2.Areas.Manage.ViewModels
         //==============================================================================
         public IFormFile MainImage { get; set; }
         public List<IFormFile> AdditionalImages { get; set; }
-        public List<Image> Images { get; set; }
 
         //==============================================================================
         public List<int> SizeIds { get; set; }

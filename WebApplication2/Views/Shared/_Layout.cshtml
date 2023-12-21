@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using WebApplication2.Services
+@inject SettingServices settingService
+
+@{
+    Dictionary<string, string> settings = await settingService.GetSettings();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -288,10 +295,9 @@
                   <img class="logo-main" src="~/assets/img/logo-light.png" alt="Logo" />
                 </a>
               </div>
-              <p>People have been using natural objects, such as tree stumps, rocks and moss, as furniture since the beginning of human civilisation.</p>
-              <p>Your current address goes to here,120 example, country.</p>
-              <p>+12546 687 987  / +15425 987 541</p>
-              <p>demo@example.com www.example.com</p>
+                                <p>@(settings.ContainsKey("Address") ? settings["Address"] : "")</p>
+                                <p>@(settings.ContainsKey("Phone") ? settings["Phone"] : "")</p>
+              <p>@(settings.ContainsKey("Email") ? settings["Email"] : "")</p>
             </div>
             <!--== End widget Item ==-->
           </div>
@@ -338,12 +344,12 @@
               <h4 class="widget-title">Follow us</h4>
               <div class="widget-menu-wrap">
                 <ul class="nav-menu">
-                  <li><a href="#/">Facebook</a></li>
-                  <li><a href="#/">Twitter</a></li>
-                  <li><a href="#/">Instagram</a></li>
-                  <li><a href="#/">LinkedIn</a></li>
-                  <li><a href="#/">Google Plus</a></li>
-                  <li><a href="#/">YouTube</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Facebook") ? settings["Facebook"] : "")">Facebook</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Twitter") ? settings["Twitter"] : "")">Twitter</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Instagram") ? settings["Instagram"] : "")">Instagram</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Linkedin") ? settings["Linkedin"] : "")">LinkedIn</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Google") ? settings["Google"] : "")">Google Plus</a></li>
+                                        <li><a href="#/@(settings.ContainsKey("Youtube") ? settings["Youtube"] : "")">YouTube</a></li>
                 </ul>
               </div>
             </div>

@@ -19,7 +19,13 @@ namespace WebApplication2.Areas.Manage.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var Products = await _context.Products.ToListAsync();
+            var Products = await _context.Products
+                .Include(x => x.Images)
+                .Include(x => x.Size)
+                .Include(x => x.Color)
+                .Include(x => x.Material)
+                .Include(x => x.Category)
+                .Where(x => !x.IsDeleted).ToListAsync();
             return View(Products);
         }
 
@@ -177,9 +183,26 @@ namespace WebApplication2.Areas.Manage.Controllers
 				Sizes = product.Size,
                 Colors = product.Color,
                 Materials = product.Material,
+                MaterialIds = product.Material.Select(x => x.Id).ToList(),
+                ColorIds = product.Color.Select(x => x.Id).ToList(),
+                SizeIds = product.Size.Select(x => x.Id).ToList(),
                 Images = new List<ProductImageVm>(),
                 Category = product.Category
 			};
+
+            foreach (var item in product.Images)
+            {
+                ProductImageVm productImageVm = new ProductImageVm
+                {
+                    Id = item.Id,
+                    ImgUrl = item.ImgUrl,
+                    IsMain = item.IsMain
+                };
+
+                updateProductVm.Images.Add(productImageVm);
+            }
+            
+            
 
 			return View(updateProductVm);
 		}
@@ -187,7 +210,7 @@ namespace WebApplication2.Areas.Manage.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(int id, UpdateProductVm updateProductVm)
         {
-                       Product product = await _context.Products
+            Product product = await _context.Products
                 .Include(x => x.Images)
                 .Include(x => x.Size)
                 .Include(x => x.Color)
@@ -199,6 +222,40 @@ namespace WebApplication2.Areas.Manage.Controllers
                 return NotFound();
             }
 
+            product.Name = updateProductVm.Name;
+            product.Price = updateProductVm.Price;
+            product.Description = updateProductVm.Description;
+            product.CategoryId = updateProductVm.CategoryId;
+            product.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == updateProductVm.CategoryId);
+
+            product.Size.RemoveAll(x => !updateProductVm.SizeIds.Contains(x.Id));
+            product.Color.RemoveAll(x => !updateProductVm.ColorIds.Contains(x.Id));
+            product.Material.RemoveAll(x => !updateProductVm.MaterialIds.Contains(x.Id));
+
+            foreach (var item in updateProductVm.SizeIds)
+            {
+                if (!product.Size.Any(x => x.Id == item))
+                {
+                    product.Size.Add(await _context.Sizes.FirstOrDefaultAsync(x => x.Id == item));
+                }
+            }
+
+            foreach (var item in updateProductVm.ColorIds)
+            {
+                if (!product.Color.Any(x => x.Id == item))
+                {
+                    product.Color.Add(await _context.Colors.FirstOrDefaultAsync(x => x.Id == item));
+                }
+            }
+
+            foreach (var item in updateProductVm.MaterialIds)
+            {
+                if (!product.Material.Any(x => x.Id == item))
+                {
+                    product.Material.Add(await _context.Materials.FirstOrDefaultAsync(x => x.Id == item));
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Category = await _context.Categories.ToListAsync();
@@ -206,7 +263,36 @@ namespace WebApplication2.Areas.Manage.Controllers
                 ViewBag.Material = await _context.Materials.ToListAsync();
                 ViewBag.Color = await _context.Colors.ToListAsync();
 
+                updateProductVm.Images = new List<ProductImageVm>();
+
+                foreach (var item in product.Images)
+                {
+                    ProductImageVm productImageVm = new ProductImageVm
+                    {
+                        Id = item.Id,
+                        ImgUrl = item.ImgUrl,
+                        IsMain = item.IsMain
+                    };
+
+                    updateProductVm.Images.Add(productImageVm);
+                }
+
                 return View(updateProductVm);
+            }
+
+            if (updateProductVm.KeepImages != null)
+            {
+                List<Image> removedImages = product.Images.Where(x => !updateProductVm.KeepImages.Contains(x.Id) && x.IsMain == false).ToList();
+
+                foreach (var item in removedImages)
+                {
+                    item.ImgUrl.DeleteFile(_env.WebRootPath, "Upload");
+                    product.Images.Remove(item);
+                }
+            }
+            else
+            {
+                product.Images.RemoveAll(x => x.IsMain == false);
             }
 
             if (updateProductVm.MainImage != null)
@@ -239,6 +325,8 @@ namespace WebApplication2.Areas.Manage.Controllers
                     ImgUrl = fileName,
                     IsMain = true
                 };
+
+                product.Images.RemoveAll(x => x.IsMain == true);
                 product.Images.Add(image);
             }
 
@@ -278,18 +366,24 @@ namespace WebApplication2.Areas.Manage.Controllers
                 }
             }
 
-            if(updateProductVm.KeepImages != null)
-            {
-                List<Image> removedImages = product.Images.Where(x => !updateProductVm.KeepImages.Contains(x.Id)).ToList();
+            await _context.SaveChangesAsync();
 
-                foreach (var item in removedImages)
-                {
-                    item.ImgUrl.DeleteFile(_env.WebRootPath, "Upload");
-                    product.Images.Remove(item);
-                }
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
             }
 
+            product.IsDeleted = true;
+            await _context.SaveChangesAsync();
 
+            return RedirectToAction("Index");
         }
     }
 }

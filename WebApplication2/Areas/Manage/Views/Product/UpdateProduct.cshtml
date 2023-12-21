@@ -1,4 +1,4 @@
-﻿@model CreateProductVm
+﻿@model UpdateProductVm
 
 <div class="container">
 	<div class="row">
@@ -42,7 +42,7 @@
 					</select>
 					<span class="text-danger" asp-validation-for="ColorIds"></span>
 				</div>
-
+				
 				<div class="container">
 					<div class="row">
 						<div class="col">
@@ -58,9 +58,32 @@
 					</div>
 				</div>
 
+				<div class="container">
+					<div class="row">
+						@foreach (var item in Model.Images.Where(i => i.IsMain == false))
+						{
+							<div class="col-6 col-md-4">
+								<div class="img-hover">
+									<img src="~/Upload/@item.ImgUrl" class="img-fluid" />
+									<input type="hidden" value="@item.Id" name="KeepImages"/>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
 				<button type="submit" class="btn btn-primary me-2">Submit</button>
 				<button class="btn btn-light" asp-action="index">Cancel</button>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>
+	let img = document.querySelectorAll(".img-hover");
+
+	img.forEach((item) => {
+		item.addEventListener("click", () => {
+			item.parentElement.remove();
+		});
+	});
+</script>

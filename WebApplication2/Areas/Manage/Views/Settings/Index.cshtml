@@ -1,0 +1,42 @@
+﻿@model Dictionary<string, string>
+
+@{
+    int count = 0;
+}
+
+<div class="table-responsive pt-3 mx-auto">
+    <h2 class="text-center">Setting List</h2>
+    <a class="btn btn-primary" asp-action="Update">Create/Update Settings</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Key
+                </th>
+                <th>
+                    Value
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        @item.Key
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

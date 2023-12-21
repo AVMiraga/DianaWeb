@@ -14,5 +14,7 @@ namespace WebApplication2.DAL
         public DbSet<Material> Materials { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
+        public DbSet<Settings> Settings { get; set; }
     }
 }

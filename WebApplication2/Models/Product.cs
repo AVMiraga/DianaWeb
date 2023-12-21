@@ -9,10 +9,6 @@ namespace WebApplication2.Models
         public string Description { get; set; }
         public bool IsDeleted { get; set; }
 
-        [NotMapped]
-        public IFormFile MainImage { get; set; }
-        [NotMapped]
-        public List<IFormFile> AdditionalImages { get; set; }
         public List<Image> Images { get; set; }
 
         public List<Size> Size { get; set; }
